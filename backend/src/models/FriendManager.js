@@ -21,10 +21,11 @@ class FriendManager extends AbstractManager {
 
   findFriends({ idUser }) {
     return this.database.query(
-      `SELECT f.id_friend, f.name AS friend_name, f.birthday, f.be
-            FROM FRIEND AS f
-            INNER JOIN USER AS u ON f.id_user = u.id_user
-            WHERE u.id_user = ?`,
+      `SELECT f.id AS id_friend, f.name AS friend_name, f.birthday, f.be
+        FROM FRIEND AS f
+        INNER JOIN USER AS u ON f.id_user = u.id
+        WHERE u.id = ?;
+        `,
       [idUser]
     );
   }

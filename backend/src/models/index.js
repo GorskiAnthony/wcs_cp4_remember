@@ -29,10 +29,19 @@ pool.getConnection().catch(() => {
 
 const models = {};
 
-const ItemManager = require("./ItemManager");
+/* eslint-disable */
+const ManagersConfig = [
+  { name: "user", managerClass: require("./UserManager") },
+  { name: "friend", managerClass: require("./FriendManager") },
+];
 
-models.item = new ItemManager();
-models.item.setDatabase(pool);
+ManagersConfig.forEach(({ name, managerClass }) => {
+  const manager = new managerClass();
+  manager.setDatabase(pool);
+  models[name] = manager;
+});
+
+/* eslint-enable */
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model

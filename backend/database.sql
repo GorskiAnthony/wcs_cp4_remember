@@ -1,19 +1,19 @@
 CREATE TABLE `USER` (
-  `id_user` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `email` VARCHAR(150) NOT NULL,
   `password` VARCHAR(190) NOT NULL,
-  PRIMARY KEY (`id_user`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `FRIEND` (
-  `id_friend` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `birthday` DATE NOT NULL,
   `id_user` INT,
   `be` VARCHAR(50),
-  PRIMARY KEY (`id_friend`),
-  CONSTRAINT `fk_user_friend` FOREIGN KEY (`id_user`) REFERENCES `USER` (`id_user`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_user_friend` FOREIGN KEY (`id_user`) REFERENCES `USER` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- Insertion des utilisateurs dans la table USER
