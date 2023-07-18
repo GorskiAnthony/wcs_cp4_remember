@@ -2,20 +2,20 @@ const AbstractManager = require("./AbstractManager");
 
 class FriendManager extends AbstractManager {
   constructor() {
-    super({ table: "user" });
+    super({ table: "friend" });
   }
 
   insert({ name, birthday, idUser, be }) {
     return this.database.query(
-      `insert into ${this.table} (name, birthday, idUser, be) values (?, ?, ?)`,
+      `insert into ${this.table} (name, birthday, id_user, be) values (?, ?, ?, ?)`,
       [name, birthday, idUser, be]
     );
   }
 
-  update({ name, birthday, id }) {
+  update({ name, birthday, be, id }) {
     return this.database.query(
-      `update ${this.table} set name = ?, birthday = ?, where id = ?`,
-      [name, birthday, id]
+      `update ${this.table} set name = ?, birthday = ?, be = ? where id = ?`,
+      [name, birthday, be, id]
     );
   }
 
