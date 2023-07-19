@@ -12,10 +12,10 @@ class FriendManager extends AbstractManager {
     );
   }
 
-  update({ name, birthday, be, id }) {
+  update({ name, birthday, be, id, idUser }) {
     return this.database.query(
-      `update ${this.table} set name = ?, birthday = ?, be = ? where id = ?`,
-      [name, birthday, be, id]
+      `update ${this.table} set name = ?, birthday = ?, be = ? where id = ? and id_user = ?`,
+      [name, birthday, be, id, idUser]
     );
   }
 
@@ -27,6 +27,13 @@ class FriendManager extends AbstractManager {
         WHERE u.id = ?;
         `,
       [idUser]
+    );
+  }
+
+  deleteFriend({ id, idUser }) {
+    return this.database.query(
+      `delete from ${this.table} where id = ? and id_user = ?`,
+      [id, idUser]
     );
   }
 }

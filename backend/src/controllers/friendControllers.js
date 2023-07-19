@@ -41,14 +41,14 @@ const read = (req, res) => {
 };
 
 const edit = (req, res) => {
-  const item = req.body;
-
-  // TODO validations (length, format...)
-
-  item.id = parseInt(req.params.id, 10);
+  const user = req.body;
+  // Ajout de l'id de l'ami
+  user.id = req.params.id;
+  // Ajout de l'id de l'utilisateur connecté
+  user.idUser = parseInt(req.user.id, 10);
 
   models.friend
-    .update(item)
+    .update(user)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -82,8 +82,13 @@ const add = (req, res) => {
 };
 
 const destroy = (req, res) => {
+  const { id } = req.params;
+  const idUser = req.user.id;
+
+  const userToDelete = { id, idUser };
+
   models.friend
-    .delete(req.params.id)
+    .deleteFriend(userToDelete)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
