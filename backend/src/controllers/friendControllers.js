@@ -43,6 +43,7 @@ const read = (req, res) => {
 
 const edit = (req, res) => {
   const user = req.body;
+
   // Ajout de l'id de l'ami
   user.id = req.params.id;
   // Ajout de l'id de l'utilisateur connecté

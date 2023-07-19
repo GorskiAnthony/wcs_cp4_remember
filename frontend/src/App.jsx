@@ -5,6 +5,8 @@ import Error from "./pages/Error/Error";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
+import Friends from "./pages/Friends/Friends";
+import Friend from "./pages/Friends/Friend";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,8 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
+      { path: "/edit/friends/:id", element: <Friend /> },
+      { path: "/friends/users", element: <Friends /> },
     ],
   },
 ]);
