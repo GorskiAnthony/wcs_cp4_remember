@@ -65,6 +65,7 @@ const edit = (req, res) => {
 
 const add = (req, res) => {
   const friend = req.body;
+  friend.idUser = parseInt(req.user.id, 10);
 
   // verification du body
   const { error } = friendSchema.validate(friend);
@@ -72,10 +73,6 @@ const add = (req, res) => {
   if (error) {
     return res.status(400).json({ message: error.message });
   }
-
-  friend.idUser = parseInt(req.user.id, 10);
-
-  // TODO validations (length, format...)
 
   models.friend
     .insert(friend)
@@ -95,7 +92,6 @@ const add = (req, res) => {
 const destroy = (req, res) => {
   const { id } = req.params;
   const idUser = req.user.id;
-
   const userToDelete = { id, idUser };
 
   models.friend
