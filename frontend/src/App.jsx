@@ -1,12 +1,10 @@
-import Home from "./pages/Home";
-
-import "./App.css";
+import Navbar from "./components/Navbar";
+import "./tailwind.css";
 
 function App() {
   return (
-    <div className="App">
-      <Home />
-      <p>coucou</p>
+    <div>
+      <Navbar />
     </div>
   );
 }
