@@ -1,4 +1,5 @@
 const models = require("../models");
+const friendSchema = require("../schema/friendSchema");
 
 const browse = (req, res) => {
   models.friend
@@ -64,6 +65,14 @@ const edit = (req, res) => {
 
 const add = (req, res) => {
   const friend = req.body;
+
+  // verification du body
+  const { error } = friendSchema.validate(friend);
+
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+
   friend.idUser = parseInt(req.user.id, 10);
 
   // TODO validations (length, format...)
@@ -79,6 +88,8 @@ const add = (req, res) => {
       console.error(err);
       res.sendStatus(500);
     });
+
+  return null;
 };
 
 const destroy = (req, res) => {
