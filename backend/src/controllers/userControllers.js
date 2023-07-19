@@ -91,6 +91,7 @@ const login = async (req, res) => {
   try {
     // Vérifier que l'email existe
     const [existingUser] = await models.user.findByEmail(email);
+
     if (existingUser.length === 0) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -110,7 +111,9 @@ const login = async (req, res) => {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     });
 
-    return res.status(200).json({ message: "Logged in" });
+    delete existingUser[0].password;
+
+    return res.status(200).json({ message: "Logged in", user: existingUser });
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);

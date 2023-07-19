@@ -2,6 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./tailwind.css";
 import Layout from "./pages/Layout";
 import Error from "./pages/Error/Error";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
 
 const router = createBrowserRouter([
   {
@@ -9,8 +12,9 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <Error />,
     children: [
-      { path: "/", element: <h1>Home</h1> },
-      { path: "/about", element: <h1>About</h1> },
+      { path: "/", element: <Home /> },
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
     ],
   },
 ]);

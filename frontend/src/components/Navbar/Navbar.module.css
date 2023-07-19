@@ -15,9 +15,5 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 30%;
-}
-
-.active {
-  color: #15cdfc;
+  width: 40%;
 }
