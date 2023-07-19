@@ -12,6 +12,7 @@ const adminMiddleware = require("./middleware/adminMiddleware");
  */
 router.post("/users/register", userControllers.add);
 router.post("/users/login", userControllers.login);
+router.post("/users/logout", userControllers.logout);
 
 /**
  * Create all routes for /users

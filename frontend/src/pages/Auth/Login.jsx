@@ -1,8 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 import * as Auth from "../../services/form.service";
 import { toastifyError, toastifySuccess } from "../../services/toast.service";
 
 export default function Login() {
+  const { handleUser } = useUser();
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     email: "admin@remember.com",
     password: "@dminLebg",
@@ -19,7 +24,9 @@ export default function Login() {
       if (result === undefined) {
         toastifyError("Erreur lors de la connexion, mauvais identifiants.");
       } else {
-        toastifySuccess("Connexion réussie !");
+        handleUser(result.user[0]);
+        toastifySuccess(`Bonjour ${result.user[0].name} 👋 !`);
+        navigate("/");
       }
     } catch (error) {
       toastifyError(error.message);

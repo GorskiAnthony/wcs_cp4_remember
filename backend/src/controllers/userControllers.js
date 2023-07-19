@@ -112,8 +112,11 @@ const login = async (req, res) => {
     });
 
     delete existingUser[0].password;
+    delete existingUser[0].isAdmin;
 
-    return res.status(200).json({ message: "Logged in", user: existingUser });
+    return res
+      .status(200)
+      .json({ message: "Logged in", user: { ...existingUser } });
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);
@@ -136,6 +139,11 @@ const destroy = (req, res) => {
     });
 };
 
+const logout = (req, res) => {
+  res.clearCookie("token");
+  res.sendStatus(200);
+};
+
 module.exports = {
   browse,
   read,
@@ -143,4 +151,5 @@ module.exports = {
   add,
   login,
   destroy,
+  logout,
 };
