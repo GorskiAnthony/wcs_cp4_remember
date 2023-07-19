@@ -16,8 +16,8 @@ router.post("/users/login", userControllers.login);
 /**
  * Create all routes for /users
  */
+router.get("/users/profil/", authMiddleware, userControllers.read);
 router.get("/users/", authMiddleware, adminMiddleware, userControllers.browse);
-router.get("/users/:id", authMiddleware, userControllers.read);
 router.put("/users/:id", authMiddleware, userControllers.edit);
 router.delete("/users/:id", authMiddleware, userControllers.destroy);
 
@@ -30,10 +30,11 @@ router.get(
   adminMiddleware,
   friendControllers.browse
 );
+
+router.get("/friends/users/", authMiddleware, friendControllers.browseFriends);
 router.post("/friends/", authMiddleware, friendControllers.add);
 router.get("/friends/:id", authMiddleware, friendControllers.read);
 router.put("/friends/:id", authMiddleware, friendControllers.edit);
 router.delete("/friends/:id", authMiddleware, friendControllers.destroy);
-router.get("/friends/users/", authMiddleware, friendControllers.browseFriends);
 
 module.exports = router;

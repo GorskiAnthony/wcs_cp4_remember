@@ -14,7 +14,7 @@ const browse = (req, res) => {
 
 const browseFriends = (req, res) => {
   models.friend
-    .findFriends({ idUser: req.params.id })
+    .findFriends({ idUser: +req.user.id })
     .then(([rows]) => {
       res.send(rows);
     })
@@ -28,7 +28,7 @@ const read = (req, res) => {
   models.friend
     .find(req.params.id)
     .then(([rows]) => {
-      if (rows[0] == null) {
+      if (rows[0] == null || rows[0].id_user !== req.user.id) {
         res.sendStatus(404);
       } else {
         res.send(rows[0]);
@@ -63,14 +63,17 @@ const edit = (req, res) => {
 };
 
 const add = (req, res) => {
-  const item = req.body;
+  const friend = req.body;
+  friend.idUser = parseInt(req.user.id, 10);
 
   // TODO validations (length, format...)
 
   models.friend
-    .insert(item)
+    .insert(friend)
     .then(([result]) => {
-      res.location(`/items/${result.insertId}`).sendStatus(201);
+      res
+        .status(201)
+        .send({ message: "New friend added", id: result.insertId });
     })
     .catch((err) => {
       console.error(err);
