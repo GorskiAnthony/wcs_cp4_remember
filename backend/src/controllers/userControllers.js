@@ -1,4 +1,6 @@
 const models = require("../models");
+const { hash } = require("../services/argon2");
+const userSchema = require("../schema/userSchema");
 
 const browse = (req, res) => {
   models.user
@@ -29,14 +31,14 @@ const read = (req, res) => {
 };
 
 const edit = (req, res) => {
-  const item = req.body;
+  const user = req.body;
 
   // TODO validations (length, format...)
 
-  item.id = parseInt(req.params.id, 10);
+  user.id = parseInt(req.params.id, 10);
 
   models.user
-    .update(item)
+    .update(user)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -50,20 +52,33 @@ const edit = (req, res) => {
     });
 };
 
-const add = (req, res) => {
-  const item = req.body;
+const add = async (req, res) => {
+  const user = req.body;
 
-  // TODO validations (length, format...)
+  try {
+    // Vérifier que l'email n'est pas déjà utilisé
+    const [existingUser] = await models.user.findByEmail(user.email);
+    if (existingUser.length > 0) {
+      return res.status(409).json({ message: "Email already used" });
+    }
 
-  models.user
-    .insert(item)
-    .then(([result]) => {
-      res.location(`/items/${result.insertId}`).sendStatus(201);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+    // vérification avec Joi
+    const { error } = userSchema.validate(user);
+
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
+
+    // Hasher le mot de passe
+    const hashedPassword = await hash(user.password);
+    user.password = hashedPassword;
+
+    await models.user.insert(user);
+    return res.status(201).json({ message: "User created" });
+  } catch (error) {
+    console.error(error);
+    return res.sendStatus(500);
+  }
 };
 
 const destroy = (req, res) => {
