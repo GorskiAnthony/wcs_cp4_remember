@@ -3,6 +3,7 @@ CREATE TABLE `USER` (
   `name` VARCHAR(50) NOT NULL,
   `email` VARCHAR(150) NOT NULL,
   `password` VARCHAR(190) NOT NULL,
+  `isAdmin` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
@@ -17,10 +18,10 @@ CREATE TABLE `FRIEND` (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- Insertion des utilisateurs dans la table USER
-INSERT INTO `USER` (`name`, `email`, `password`)
+INSERT INTO `USER` (`name`, `email`, `password`, `isAdmin`)
 VALUES
-  ('admin', 'admin@remember.com', '$argon2id$v=19$m=65536,t=5,p=1$ZUKY3dWwATpCkdTTmwroGA$M7r+inI91qAIumtBQVc+kQych8L9HoiwuN2DfDhe0Tg'),
-  ('user', 'user@remember.com', '$argon2id$v=19$m=65536,t=5,p=1$FL1/N1ZyuXWhZchUGe0D0A$h2jDJY7uQLnNJu8v2ftzAGkht52bB2SqcWiAYW/NMgM');
+  ('admin', 'admin@remember.com', '$argon2id$v=19$m=65536,t=5,p=1$ZUKY3dWwATpCkdTTmwroGA$M7r+inI91qAIumtBQVc+kQych8L9HoiwuN2DfDhe0Tg', 1),
+  ('user', 'user@remember.com', '$argon2id$v=19$m=65536,t=5,p=1$FL1/N1ZyuXWhZchUGe0D0A$h2jDJY7uQLnNJu8v2ftzAGkht52bB2SqcWiAYW/NMgM', 0);
 
 -- Insertion des amis dans la table FRIEND avec leurs dates de naissance
 INSERT INTO `FRIEND` (`name`, `birthday`, `id_user`, `be`)

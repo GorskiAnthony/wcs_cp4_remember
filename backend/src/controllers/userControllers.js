@@ -1,11 +1,16 @@
 const models = require("../models");
-const { hash } = require("../services/argon2");
+const { hash, verifyPwd } = require("../services/argon2");
 const userSchema = require("../schema/userSchema");
+const { createToken } = require("../services/jwt");
 
 const browse = (req, res) => {
   models.user
     .findAll()
     .then(([rows]) => {
+      rows.forEach((user) => {
+        // eslint-disable-next-line no-param-reassign
+        delete user.password;
+      });
       res.send(rows);
     })
     .catch((err) => {
@@ -21,6 +26,8 @@ const read = (req, res) => {
       if (rows[0] == null) {
         res.sendStatus(404);
       } else {
+        // eslint-disable-next-line no-param-reassign
+        delete rows[0].password;
         res.send(rows[0]);
       }
     })
@@ -81,6 +88,38 @@ const add = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Vérifier que l'email existe
+    const [existingUser] = await models.user.findByEmail(email);
+    if (existingUser.length === 0) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Vérifier que le mot de passe est correct
+    const isValid = await verifyPwd(existingUser[0].password, password);
+    if (!isValid) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Générer un token
+    const token = createToken(existingUser[0]);
+
+    // Envoyer le token dans un cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    });
+
+    return res.status(200).json({ message: "Logged in" });
+  } catch (error) {
+    console.error(error);
+    return res.sendStatus(500);
+  }
+};
+
 const destroy = (req, res) => {
   models.user
     .delete(req.params.id)
@@ -102,5 +141,6 @@ module.exports = {
   read,
   edit,
   add,
+  login,
   destroy,
 };

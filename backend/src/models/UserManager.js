@@ -11,6 +11,13 @@ class UserManager extends AbstractManager {
     ]);
   }
 
+  isAdmin(id) {
+    return this.database.query(
+      `select * from ${this.table} where id = ? and isAdmin = 1`,
+      [id]
+    );
+  }
+
   insert({ name, email, password }) {
     return this.database.query(
       `insert into ${this.table} (name, email, password) values (?, ?, ?)`,

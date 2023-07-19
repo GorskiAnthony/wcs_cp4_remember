@@ -12,12 +12,12 @@ const hash = async (password) => {
   return hashed;
 };
 
-const verify = async (hashPwd, password) => {
-  const verifyPwd = await argon2.verify(hashPwd, password);
-  return verifyPwd;
+const verifyPwd = async (hashPwd, password) => {
+  const verify = await argon2.verify(hashPwd, password);
+  return verify;
 };
 
 module.exports = {
   hash,
-  verify,
+  verifyPwd,
 };
