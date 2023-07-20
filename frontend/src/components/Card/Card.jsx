@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import JSConfetti from "js-confetti";
 import * as dayTrim from "../../services/calculeDate.services";
 import style from "./Card.module.css";
+import { useUser } from "../../context/UserContext";
 
 export default function Card({
   friend_name: friendName,
@@ -14,12 +15,16 @@ export default function Card({
   const tempsRestant = dayTrim.calculerTempsRestant(dayTrim.trimDate(birthday));
   const [hb, setHB] = useState(false);
   const jsConfetti = new JSConfetti();
+  const { isView, setIsView } = useUser();
 
-  if (tempsRestant.jours === 0) {
-    jsConfetti.addConfetti({
-      emojis: ["🎉", "🎊", "🎈", "💃", "🍾", "🥂"],
-    });
-  }
+  useEffect(() => {
+    if (tempsRestant.jours === 0 && !isView) {
+      jsConfetti.addConfetti({
+        emojis: ["🎉", "🎊", "🎈", "💃", "🍾", "🥂"],
+      });
+      setIsView(true);
+    }
+  }, []);
 
   if (tempsRestant.jours === 0 && !hb) {
     setHB(true);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import JSConfetti from "js-confetti";
+import { useNavigate } from "react-router-dom";
 import * as PostFriends from "../../services/form.service";
 import { trimDate } from "../../services/calculeDate.services";
 import { toastifySuccess } from "../../services/toast.service";
@@ -11,6 +12,7 @@ export default function AddFriend() {
     be: "Famille",
   });
   const jsConfetti = new JSConfetti();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,6 +28,16 @@ export default function AddFriend() {
       await PostFriends.add(`/friends/`, friend);
       toastifySuccess("Une pensée pour votre ami(e)");
       jsConfetti.addConfetti();
+      // reset form
+      setFriend({
+        name: "",
+        birthday: "",
+        be: "Famille",
+      });
+      // setTimeout to wait for the confetti to finish
+      setTimeout(() => {
+        navigate("/friends/users");
+      }, 2000);
     } catch (error) {
       console.error(error);
     }

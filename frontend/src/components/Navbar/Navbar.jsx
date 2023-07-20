@@ -12,13 +12,14 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const { user, handleUser } = useUser();
+  const { user, handleUser, setIsView } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await Auth.logout("/users/logout");
     handleUser(null);
     toastifySuccess("Vous êtes déconnecté");
+    setIsView(false);
     navigate("/");
   };
   return (

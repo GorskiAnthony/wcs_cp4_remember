@@ -5,12 +5,16 @@ const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isView, setIsView] = useState(false);
 
   const handleUser = (updateUser) => {
     setUser(updateUser);
   };
 
-  const value = useMemo(() => ({ user, handleUser }), [user, handleUser]);
+  const value = useMemo(
+    () => ({ user, handleUser, isView, setIsView }),
+    [user, handleUser, isView, setIsView]
+  );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
