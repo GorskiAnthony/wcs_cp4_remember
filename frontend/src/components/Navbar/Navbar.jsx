@@ -56,7 +56,7 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <NavLink to="/login" activeclassname={style.active}>
+            <NavLink to="/" activeclassname={style.active}>
               Késako?
             </NavLink>
             <NavLink to="/login" activeclassname={style.active}>

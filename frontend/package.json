@@ -7,6 +7,8 @@
     "fix": "prettier --write . && eslint --fix --ext .jsx ."
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "@vitejs/plugin-react": "^3.0.1",
     "axios": "^1.4.0",
     "js-confetti": "^0.11.0",

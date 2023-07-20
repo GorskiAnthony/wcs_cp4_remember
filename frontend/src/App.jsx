@@ -8,6 +8,7 @@ import Register from "./pages/Auth/Register";
 import Friends from "./pages/Friends/Friends";
 import Friend from "./pages/Friends/Friend";
 import AddFriend from "./pages/Friends/AddFriend";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -18,9 +19,14 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-      { path: "/edit/friends/:id", element: <Friend /> },
-      { path: "/friends/users", element: <Friends /> },
-      { path: "/add/friends", element: <AddFriend /> },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: "/edit/friends/:id", element: <Friend /> },
+          { path: "/friends/users", element: <Friends /> },
+          { path: "/add/friends", element: <AddFriend /> },
+        ],
+      },
     ],
   },
 ]);

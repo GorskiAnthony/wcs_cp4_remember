@@ -17,7 +17,7 @@ export default function Card({
 
   if (tempsRestant.jours === 0) {
     jsConfetti.addConfetti({
-      emojis: ["🎉", "🎊", "🎈"],
+      emojis: ["🎉", "🎊", "🎈", "💃", "🍾", "🥂"],
     });
   }
 

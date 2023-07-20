@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import * as GetFriends from "../../services/form.service";
 import { trimDate } from "../../services/calculeDate.services";
 import { toastifySuccess } from "../../services/toast.service";
+import Modal from "../../components/Modal/Modal";
 
 export default function Friend() {
   const [friend, setFriend] = useState({});
-
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,12 +32,33 @@ export default function Friend() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    friend.birthday = trimDate(friend.birthday);
     try {
       await GetFriends.edit(`/friends/${id}`, friend);
       toastifySuccess("Modification effectuée avec succès");
+      navigate("/friends/users");
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleDelete = async () => {
+    // display a modal to confirm the deletion
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    // Call the delete API or any other logic to perform the deletion
+    try {
+      await GetFriends.destroy(`/friends/${id}`);
+      toastifySuccess("Suppression effectuée avec succès");
+      navigate("/friends/users");
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Close the modal after deletion
+    setIsModalOpen(false);
   };
 
   if (loading) {
@@ -98,10 +122,17 @@ export default function Friend() {
                   </tr>
                 </tbody>
               </table>
-              <div className="mt-4 flex justify-end">
+              <div className="mt-4 flex justify-around">
+                <button
+                  onClick={handleDelete}
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                >
+                  Supprimer
+                </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mr-5"
                 >
                   Enregistrer
                 </button>
@@ -110,6 +141,13 @@ export default function Friend() {
           </div>
         </div>
       </div>
+      {/* Modal */}
+      {isModalOpen && (
+        <Modal
+          onClose={() => setIsModalOpen(false)}
+          handleDelete={confirmDelete}
+        />
+      )}
     </div>
   );
 }
