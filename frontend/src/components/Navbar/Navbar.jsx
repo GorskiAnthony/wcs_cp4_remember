@@ -19,15 +19,16 @@ export default function Navbar() {
     <nav className={style.nav}>
       <h1>
         <Link to="/" activeclassname={style.active}>
-          Remember
+          BirthdayPal
         </Link>
       </h1>
       <div className={style.links}>
         {user ? (
           <>
-            <NavLink to="/dashboard" activeclassname={style.active}>
+            {/** Je vais trouver une utiliter à cette route */}
+            {/* <NavLink to="/dashboard" activeclassname={style.active}>
               Dashboard
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/profil" activeclassname={style.active}>
               Mon profil
             </NavLink>
