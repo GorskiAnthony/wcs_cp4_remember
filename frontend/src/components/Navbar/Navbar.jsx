@@ -2,6 +2,7 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import * as Auth from "../../services/form.service";
 import style from "./Navbar.module.css";
+import { toastifySuccess } from "../../services/toast.service";
 
 export default function Navbar() {
   const { user, handleUser } = useUser();
@@ -9,8 +10,9 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await Auth.logout("/users/logout");
-    navigate("/");
     handleUser(null);
+    toastifySuccess("Vous êtes déconnecté");
+    navigate("/");
   };
 
   return (
