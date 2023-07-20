@@ -66,7 +66,6 @@ const edit = (req, res) => {
 
 const add = (req, res) => {
   const friend = req.body;
-  friend.idUser = parseInt(req.user.id, 10);
 
   // verification du body
   const { error } = friendSchema.validate(friend);
@@ -74,6 +73,8 @@ const add = (req, res) => {
   if (error) {
     return res.status(400).json({ message: error.message });
   }
+
+  friend.idUser = parseInt(req.user.id, 10);
 
   models.friend
     .insert(friend)
