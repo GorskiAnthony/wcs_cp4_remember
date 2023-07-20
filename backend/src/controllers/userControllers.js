@@ -112,7 +112,6 @@ const login = async (req, res) => {
     });
 
     delete existingUser[0].password;
-    delete existingUser[0].isAdmin;
 
     return res
       .status(200)

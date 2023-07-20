@@ -66,7 +66,7 @@ export default function Login() {
       } else {
         handleUser(result.user[0]);
         toastifySuccess(`Bonjour ${result.user[0].name} 👋 !`);
-        navigate("/");
+        navigate("/friends/users");
       }
     } catch (error) {
       toastifyError(error.message);

@@ -30,7 +30,7 @@ export default function Friends() {
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-5 gap-5 mt-5">
+      <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-5 mt-5">
         {friends.map((friend) => (
           // eslint-disable-next-line react/jsx-props-no-spreading
           <Card key={friend.id_friend} {...friend} />
