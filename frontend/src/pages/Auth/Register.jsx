@@ -62,7 +62,7 @@ export default function Register() {
           alt="Your Company"
         />
         <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Inscris toi, et plus personne ne te fera chier avec leurs
+          Inscris-toi, et plus personne ne te fera chier avec leurs
           anniversaires
         </h2>
       </div>
