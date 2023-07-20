@@ -30,6 +30,17 @@ class FriendManager extends AbstractManager {
     );
   }
 
+  findUser(idUser) {
+    return this.database.query(
+      `SELECT u.id, u.name, u.email, u.isAdmin
+        FROM USER u
+        JOIN FRIEND f ON u.id = f.id_user
+        WHERE f.id = ?;
+        `,
+      [idUser]
+    );
+  }
+
   deleteFriend({ id, idUser }) {
     return this.database.query(
       `delete from ${this.table} where id = ? and id_user = ?`,
