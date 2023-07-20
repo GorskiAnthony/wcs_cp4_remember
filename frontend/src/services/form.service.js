@@ -1,4 +1,5 @@
 import axios from "./axios";
+import { toastifyError } from "../services/toast.service";
 
 export const browse = async (url) => {
   try {
@@ -14,6 +15,7 @@ export const add = async (url, data) => {
     const response = await axios.post(url, data);
     return response.data;
   } catch (error) {
+    toastifyError(error.response.data.message);
     console.error(error);
   }
 };

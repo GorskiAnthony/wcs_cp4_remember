@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toastifyError, toastifySuccess } from "../../services/toast.service";
+import * as PostUser from "../../services/form.service";
 
 const eye = (
   <svg
@@ -42,6 +45,13 @@ const eyeSlash = (
 export default function Register() {
   const [typeInput, setTypeInput] = useState("password");
   const [typeInputConfirm, setTypeInputConfirm] = useState("password");
+  const [user, setUser] = useState({
+    name: "azerty qwerty",
+    email: "azerty@azerty.fr",
+    password: "@zertY123",
+    confirmPassword: "@zertY123",
+  });
+  const navigate = useNavigate();
 
   const handleViewPwd = (inputType) => {
     if (inputType === "password") {
@@ -50,6 +60,27 @@ export default function Register() {
       setTypeInputConfirm(
         typeInputConfirm === "password" ? "text" : "password"
       );
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { password, confirmPassword } = user;
+    if (password !== confirmPassword) {
+      toastifyError("Les mots de passe ne correspondent pas");
+    } else {
+      try {
+        const data = await PostUser.add("/users/register", user);
+        toastifySuccess(data.message);
+        navigate("/login");
+      } catch (error) {
+        toastifyError(error.response);
+      }
     }
   };
 
@@ -83,6 +114,8 @@ export default function Register() {
                   name="name"
                   type="text"
                   placeholder="Harry Potter"
+                  onChange={handleChange}
+                  value={user.name}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -101,6 +134,8 @@ export default function Register() {
                   name="email"
                   type="email"
                   placeholder="harry.potter@poudlard.com"
+                  onChange={handleChange}
+                  value={user.email}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -119,6 +154,8 @@ export default function Register() {
                   id="password"
                   name="password"
                   type={typeInput}
+                  onChange={handleChange}
+                  value={user.password}
                   placeholder="********"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -145,6 +182,8 @@ export default function Register() {
                   name="confirmPassword"
                   type={typeInputConfirm}
                   placeholder="********"
+                  onChange={handleChange}
+                  value={user.confirmPassword}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -160,18 +199,19 @@ export default function Register() {
 
             <div className="flex items-center justify-between">
               <div className="text-sm leading-6">
-                <a
-                  href="#!"
+                <button
+                  type="button"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot password?
-                </a>
+                </button>
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Ok let's go 🚀
