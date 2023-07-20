@@ -1,6 +1,9 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import JSConfetti from "js-confetti";
 import * as dayTrim from "../../services/calculeDate.services";
+import style from "./Card.module.css";
 
 export default function Card({
   friend_name: friendName,
@@ -9,9 +12,25 @@ export default function Card({
   id_friend: idFriend,
 }) {
   const tempsRestant = dayTrim.calculerTempsRestant(dayTrim.trimDate(birthday));
+  const [hb, setHB] = useState(false);
+  const jsConfetti = new JSConfetti();
+
+  if (tempsRestant.jours === 0) {
+    jsConfetti.addConfetti({
+      emojis: ["🎉", "🎊", "🎈"],
+    });
+  }
+
+  if (tempsRestant.jours === 0 && !hb) {
+    setHB(true);
+  }
 
   return (
-    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div
+      className={`max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${
+        hb ? style.animePulse : ""
+      }`}
+    >
       <span className="flex justify-between py-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
