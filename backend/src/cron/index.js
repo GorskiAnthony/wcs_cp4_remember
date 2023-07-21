@@ -1,21 +1,18 @@
 const { CronJob } = require("cron");
 const { getBirthday, getUserFriend } = require("./utils/getFunctions");
-const { calculerTempsRestant } = require("../services/calculeDate.service");
+const { calculateTimeRemaining } = require("../services/calculeDate.service");
+const sendingMail = require("./utils/sendMail");
 
 // eslint-disable-next-line no-unused-vars
 const TO_MIDNIGHT = "00 00 00 * * *";
 // eslint-disable-next-line no-unused-vars
-const TO_EVERY_MINUTE = "00 * * * * *";
 const TO_EVERY_TEN_SECONDS = "*/10 * * * * *";
+const TO_EVERY_MINUTE = "00 * * * * *";
 
 async function sendBirthdayEmail(user) {
   try {
     const [[userFriend]] = await getUserFriend(user.id);
-    console.info("J'envoi un mail à : ", userFriend.email);
-    console.info(
-      "Avec le message : ",
-      `C'est l'anniversaire de votre ami: ${user.name}`
-    );
+    await sendingMail(userFriend.email, user.name);
   } catch (error) {
     console.error(error);
   }
@@ -26,8 +23,8 @@ async function checkBirthdays() {
     const [res] = await getBirthday();
 
     res.forEach((user) => {
-      const { jours } = calculerTempsRestant(user.birthday);
-      if (jours === 0) {
+      const { days } = calculateTimeRemaining(user.birthday);
+      if (days === 0) {
         sendBirthdayEmail(user);
       }
     });
@@ -37,7 +34,7 @@ async function checkBirthdays() {
 }
 
 const job = new CronJob(
-  TO_EVERY_TEN_SECONDS,
+  TO_EVERY_MINUTE,
   checkBirthdays,
   null,
   true,
