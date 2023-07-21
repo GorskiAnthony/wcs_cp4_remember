@@ -46,10 +46,10 @@ export default function Register() {
   const [typeInput, setTypeInput] = useState("password");
   const [typeInputConfirm, setTypeInputConfirm] = useState("password");
   const [user, setUser] = useState({
-    name: "azerty qwerty",
-    email: "azerty@azerty.fr",
-    password: "@zertY123",
-    confirmPassword: "@zertY123",
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const navigate = useNavigate();
 

@@ -49,8 +49,8 @@ export default function Login() {
   const [typeInput, setTypeInput] = useState("password");
 
   const [user, setUser] = useState({
-    email: "admin@remember.com",
-    password: "@dminLebg",
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
